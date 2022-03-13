@@ -27,7 +27,7 @@ namespace OS_Practice_3
                     Console.WriteLine("  Потребитель [" + OS_ConsumerNumber.ToString() + "]: снято " + Program.q.Dequeue().ToString());
                 }
             }
-            Thread.Sleep(5000);
+            Thread.Sleep(500);
             goto OS_Cns;
         }
     }
