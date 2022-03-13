@@ -12,15 +12,23 @@ namespace OS_Practice_3
 
         public async static void OS_Print()
         {
-            OS_Printing:
+            Queue<int> temp;
+        OS_Printing:
             Console.Clear();
             Console.WriteLine();
-            foreach (int item in q)
-            {
-                Console.Write(" " + item.ToString());
-            }
-            Console.WriteLine("\n________________________________");
-            await Task.Delay(1000);
+            lock (q) temp = q;
+            lock (temp)
+                foreach (int item in temp)
+                {
+                    Console.Write(" " + item.ToString());
+                    if (item < 10) Console.Write(" ");
+                }
+            Console.WriteLine();
+            for (int i = 0; i < Console.WindowWidth; i++)
+                Console.Write("_");
+            Console.WriteLine("\n\n Производитель 1    Производитель 2    Производитель 3    Потребитель 1    Потребитель 2");
+            Console.WriteLine(" +");
+            await Task.Delay(500);
             goto OS_Printing;
         }
 

@@ -11,6 +11,7 @@ namespace OS_Practice_3
     {
         Thread thread;
         int OS_ManifacturerNumber;
+        public Queue<int> mq = new();
         Random random = new();
         bool OS_isSleeping;
 
@@ -33,11 +34,13 @@ namespace OS_Practice_3
                 int w = random.Next(1, 100);
                 lock (Program.q)
                     Program.q.Enqueue(w);
-                Console.WriteLine("Производитель [" + OS_ManifacturerNumber.ToString() + "]: добавлено " + w.ToString());
+                lock (mq)
+                    mq.Enqueue(w);
+                //Console.WriteLine("Производитель [" + OS_ManifacturerNumber.ToString() + "]: добавлено " + w.ToString());
                 if (Program.q.Count >= 100)
                 {
                     OS_isSleeping = true;
-                    Console.WriteLine("Производитель [" + OS_ManifacturerNumber.ToString() + "]: уснул");
+                    //Console.WriteLine("Производитель [" + OS_ManifacturerNumber.ToString() + "]: уснул");
                 }
             }
             Thread.Sleep(500);

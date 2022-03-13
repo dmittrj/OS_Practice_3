@@ -11,6 +11,7 @@ namespace OS_Practice_3
     {
         Thread thread;
         int OS_ConsumerNumber;
+        public Queue<int> cq = new();
 
         public OS_Consumer(int num)
         {
@@ -24,7 +25,8 @@ namespace OS_Practice_3
             lock (Program.q) {
                 if (Program.q.Count > 0)
                 {
-                    Console.WriteLine("  Потребитель [" + OS_ConsumerNumber.ToString() + "]: снято " + Program.q.Dequeue().ToString());
+                    lock (cq)
+                        cq.Enqueue(Program.q.Dequeue());
                 }
             }
             Thread.Sleep(500);
