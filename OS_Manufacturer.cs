@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace OS_Practice_3
 {
-    class OS_Manufacturer
+    class OS_Manufacturer : OS_Threader
     {
-        Thread thread;
+        //public Thread thread;
         int OS_ManifacturerNumber;
         public Queue<int> mq = new();
         Random random = new();
@@ -19,6 +19,7 @@ namespace OS_Practice_3
         {
             OS_ManifacturerNumber = num;
             OS_isSleeping = false;
+            ShutDown = false;
             thread = new Thread(OS_Manufacte);
             thread.Start();
         }
@@ -43,7 +44,13 @@ namespace OS_Practice_3
                     //Console.WriteLine("Производитель [" + OS_ManifacturerNumber.ToString() + "]: уснул");
                 }
             }
-            Thread.Sleep(500);
+            try
+            {
+                Thread.Sleep(500);
+            } catch
+            {
+                return;
+            }
             goto OS_Mnf;
         }
     }

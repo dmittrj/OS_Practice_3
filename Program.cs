@@ -26,16 +26,16 @@ namespace OS_Practice_3
             Console.WriteLine();
             for (int i = 0; i < Console.WindowWidth; i++)
                 Console.Write("_");
-            Console.WriteLine("\n\n Производитель 1    Производитель 2    Производитель 3    Потребитель 1    Потребитель 2");
-            Console.WriteLine(" +");
+            Console.WriteLine("\n\n q - остановить производителей");
             await Task.Delay(500);
+            if (OS_Threader.ConsumersAlive == 0) return;
             goto OS_Printing;
         }
 
         static void Main(string[] args)
         {
-            Thread printer = new Thread(OS_Print);
-            object[] f =
+            Thread printer = new(OS_Print);
+            OS_Threader[] f =
             {
                 new OS_Manufacturer(1),
                 new OS_Manufacturer(2),
@@ -44,6 +44,15 @@ namespace OS_Practice_3
                 new OS_Consumer(2)
             };
             printer.Start();
+            ConsoleKey key = Console.ReadKey().Key;
+            if (key == ConsoleKey.Q)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    f[i].thread.Interrupt();
+                    OS_Threader.ShutDown = true;
+                }
+            }
         }
     }
 }

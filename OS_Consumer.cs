@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace OS_Practice_3
 {
-    class OS_Consumer
+    class OS_Consumer : OS_Threader
     {
-        Thread thread;
+        //public Thread thread;
         int OS_ConsumerNumber;
         public Queue<int> cq = new();
 
         public OS_Consumer(int num)
         {
             OS_ConsumerNumber = num;
+            ConsumersAlive = 2;
             thread = new Thread(OS_Consume);
             thread.Start();
         }
@@ -27,6 +28,15 @@ namespace OS_Practice_3
                 {
                     lock (cq)
                         cq.Enqueue(Program.q.Dequeue());
+                } else if (ShutDown)
+                {
+                    ConsumersAlive--;
+                    if (ConsumersAlive == 0)
+                    {
+                        Console.WriteLine("\n\n Подождите, программа сейчас завершится\n\n");
+                        Thread.Sleep(3000);
+                    }
+                    return;
                 }
             }
             Thread.Sleep(500);
